@@ -1,7 +1,7 @@
 deviantART-Gallery-Plugin
 =========================
 
-HEAVILY MODIFIED BY
+HEAVILY MODIFIED BY [Potto](https://github.com/Potato22/Friendly-deviantART-Gallery-Plugin/commits/master/README.md?author=Potato22)
 
 Embed your deviantART gallery with this Javascript plugin.
 
