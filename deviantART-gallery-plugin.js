@@ -1,233 +1,67 @@
-function deviantARTGalleryPlugin(username, id, ratio) {
-    // Inject the gallery markup
-    var gallery = document.getElementById('deviantART-gallery');
-    gallery.innerHTML = '<div id="ss__wrapper"></div><div id="ss__controls"><div id="ss__prev"><div id="ss__prevChev"></div></div><div id="ss__next"><div id="ss__nextChev"></div></div><div id="ss__dots"></div></div></div>';
+/*
+@preserve
+modified by Potto/Potato2292
+merge of:
+https://github.com/jamesl1001/deviantART-Gallery-Plugin
+https://github.com/jamesl1001/deviantART-API
 
-    var deviations = [];
+http://goessner.net/
+*/
 
-    (function queryYQL() {
-        // thanks http://stackoverflow.com/a/7369516/1696757
-        var url = 'http://backend.deviantart.com/rss.xml?q=gallery:' + username + '/' + id;
+const USERNAME = "Potato2292"
+const GalleryId = "78916640"
 
-        window['callback'] = callback;
-        var s = document.createElement('script');
-        s.src = "https://api.rss2json.com/v1/api.json?callback=callback&rss_url=" + escape(url);
-        document.body.appendChild(s);
-        
-        function callback(json) {
-            var items = json.items;
-
-            for(var i = 0, l = items.length; i < l; i++) {
+function getDeviations(url, limit, start) {
+    var deviations = [],
+        limit = limit || null,
+        start = start || 0;
+    let xhr = new XMLHttpRequest;
+    xhr.open("GET", "https://backend.deviantart.com/rss.xml?q=gallery:"+USERNAME+"/"+GalleryId), xhr.send(), console.log("[DAGP] request sent"), xhr.onload = function () {
+        let json1 = xml2json((new DOMParser).parseFromString(xhr.response, "text/xml")),
+            json2, items = JSON.parse("{" + json1.slice(11)).rss.channel.item;
+        for (var i = 0, l = items.length; i < l; i++)
+            if (!(i < start)) {
+                if (limit && i == start + limit) break;
                 var object = {};
-
-                object.title = items[i].title;
-                object.image = items[i].enclosure.link;
-
-                deviations.push(object);
-            }
-
-            // async function is complete, move on
-            var images = '';
-
-            for(var i = 0, l = deviations.length; i < l; i++) {
-                images += '<img src="' + deviations[i].image + '" alt="' + deviations[i].title + '"/>';
-            }
-
-            document.getElementById('ss__wrapper').innerHTML = images;
-
-            simpleslider(ratio);
-        }
-    })();
+                object.title = items[i].title, object.link = items[i].link, object.image = items[i]["media:content"]["@url"], deviations.push(object), console.log("[DAGP] feed received")
+            } console.log("[DAGP] DATA:"), processDeviations(deviations), deviantARTGalleryPlugin("USERNAME", "78916640", "16:9")
+    }
 }
 
 /*
-  SimpleSlider v1.2 by JaL Productions
-  http://jalproductions.co.uk/
-  https://github.com/jamesl1001/simpleslider
+This work is licensed under Creative Commons GNU LGPL License.
+License: http://creativecommons.org/licenses/LGPL/2.1/
+Version: 0.9
+Author:  Stefan Goessner/2006
+Web:     http://goessner.net/
 */
+function xml2json(e,n){var t={toObj:function(e){var n={};if(1==e.nodeType){if(e.attributes.length)for(var i=0;i<e.attributes.length;i++)n["@"+e.attributes[i].nodeName]=(e.attributes[i].nodeValue||"").toString();if(e.firstChild){for(var r=0,o=0,l=!1,a=e.firstChild;a;a=a.nextSibling)1==a.nodeType?l=!0:3==a.nodeType&&a.nodeValue.match(/[^ \f\n\r\t\v]/)?r++:4==a.nodeType&&o++;if(l)if(r<2&&o<2)for(t.removeWhite(e),a=e.firstChild;a;a=a.nextSibling)3==a.nodeType?n["#text"]=t.escape(a.nodeValue):4==a.nodeType?n["#cdata"]=t.escape(a.nodeValue):n[a.nodeName]?n[a.nodeName]instanceof Array?n[a.nodeName][n[a.nodeName].length]=t.toObj(a):n[a.nodeName]=[n[a.nodeName],t.toObj(a)]:n[a.nodeName]=t.toObj(a);else e.attributes.length?n["#text"]=t.escape(t.innerXml(e)):n=t.escape(t.innerXml(e));else if(r)e.attributes.length?n["#text"]=t.escape(t.innerXml(e)):n=t.escape(t.innerXml(e));else if(o)if(o>1)n=t.escape(t.innerXml(e));else for(a=e.firstChild;a;a=a.nextSibling)n["#cdata"]=t.escape(a.nodeValue)}e.attributes.length||e.firstChild||(n=null)}else 9==e.nodeType?n=t.toObj(e.documentElement):alert("unhandled node type: "+e.nodeType);return n},toJson:function(e,n,i){var r=n?'"'+n+'"':"";if(e instanceof Array){for(var o=0,l=e.length;o<l;o++)e[o]=t.toJson(e[o],"",i+"\t");r+=(n?":[":"[")+(e.length>1?"\n"+i+"\t"+e.join(",\n"+i+"\t")+"\n"+i:e.join(""))+"]"}else if(null==e)r+=(n&&":")+"null";else if("object"==typeof e){var a=[];for(var d in e)a[a.length]=t.toJson(e[d],d,i+"\t");r+=(n?":{":"{")+(a.length>1?"\n"+i+"\t"+a.join(",\n"+i+"\t")+"\n"+i:a.join(""))+"}"}else r+="string"==typeof e?(n&&":")+'"'+e.toString()+'"':(n&&":")+e.toString();return r},innerXml:function(e){var n="";if("innerHTML"in e)n=e.innerHTML;else for(var t=function(e){var n="";if(1==e.nodeType){n+="<"+e.nodeName;for(var i=0;i<e.attributes.length;i++)n+=" "+e.attributes[i].nodeName+'="'+(e.attributes[i].nodeValue||"").toString()+'"';if(e.firstChild){n+=">";for(var r=e.firstChild;r;r=r.nextSibling)n+=t(r);n+="</"+e.nodeName+">"}else n+="/>"}else 3==e.nodeType?n+=e.nodeValue:4==e.nodeType&&(n+="<![CDATA["+e.nodeValue+"]]>");return n},i=e.firstChild;i;i=i.nextSibling)n+=t(i);return n},escape:function(e){return e.replace(/[\\]/g,"\\\\").replace(/[\"]/g,'\\"').replace(/[\n]/g,"\\n").replace(/[\r]/g,"\\r")},removeWhite:function(e){e.normalize();for(var n=e.firstChild;n;)if(3==n.nodeType)if(n.nodeValue.match(/[^ \f\n\r\t\v]/))n=n.nextSibling;else{var i=n.nextSibling;e.removeChild(n),n=i}else 1==n.nodeType?(t.removeWhite(n),n=n.nextSibling):n=n.nextSibling;return e}};9==e.nodeType&&(e=e.documentElement);var i=t.toJson(t.toObj(t.removeWhite(e)),e.nodeName,"\t");return"{\n"+n+(n?i.replace(/\t/g,n):i.replace(/\t|\n/g,""))+"\n}"}
 
-function simpleslider(ssR, ssF, ssD, ssP) {
-    // Setup variables
-    var ss              = document.getElementById('deviantART-gallery'),
-        ssWrapper       = document.getElementById('ss__wrapper'),
-        ssControls      = document.getElementById('ss__controls'),
-        ssPrev          = document.getElementById('ss__prev'),
-        ssNext          = document.getElementById('ss__next'),
-        ssDots          = document.getElementById('ss__dots'),
-        ssImages        = ssWrapper.getElementsByTagName('img'),
-        ssFrames        = ssF || ssImages.length,
-        ssRatio         = ssR,
-        ssDirectory     = ssD,
-        ssPrefix        = ssP,
-        ssCurrentFrame  = 0,
-        ssDotsWidth     = ssFrames * 20,
-        ssWidth         = 0,
-        ssHeight        = 0;
+const TARGET = "daImg";
+//define the element class name that the script will find and inject.
 
-    // Calculate aspect ratio
-    var ssRatioSplit      = ssRatio.split(':');
-    var ssRatioPercentage = ssRatioSplit[1] / ssRatioSplit[0] * 100;
 
-    // Set dimensions
-    ss.style.paddingBottom = ssWrapper.style.paddingBottom = ssRatioPercentage + '%';
-    ssDots.style.width     = ssDotsWidth + 'px';
-
-    // Get pixel dimensions
-    function getSSDimensions() {
-        ssWidth  = ssWrapper.offsetWidth;
-        ssHeight = ssWrapper.offsetHeight;
-    }
-
-    getSSDimensions();
-
-    // Generate navigation dots
-    for(var i = 0; i < ssFrames; i++) {
-        var ssDot = document.createElement('div');
-        ssDot.className = 'ss__dot' + ' ss__frame' + [i];
-        ssDots.appendChild(ssDot);
-    }
-
-    ssAllDots = ssDots.getElementsByTagName('div');
-
-    // Create img elements if they don't already exist on the DOM
-    if(ssImages.length == 0) {
-        for(var i = 1; i <= ssFrames; i++) {
-            var ssImg = new Image();
-            ssImg.src = ssD + '/' + ssP + i + '.jpg'; // 'img/directory/prefix1.jpg'
-            ssWrapper.innerHTML += ssImg.outerHTML;
-        }
-        ssImages = ssWrapper.getElementsByTagName('img');
-    }
-
-    for(var i = 0, l = ssImages.length; i < l; i++) {
-        coverImages(ssImages[i]);
-    }
-
-    // Ensure each image fills the wrapper leaving no whitespace (background-size:cover)
-    function coverImages(imgElem) {
-
-        var img = new Image();
-        img.src = imgElem.src;
-
-        var wait = setInterval(function() {
-            if(img.width != 0 && img.height != 0) {
-                clearInterval(wait);
-
-                // Stretch to fit
-                if((img.width / img.height) < (ssWidth / ssHeight)) {
-                    imgElem.className += ' full-width';
-                } else {
-                    imgElem.className += ' full-height';
-                }
-
-                calculateCentre();
+function deviantARTGalleryPlugin(e, t, n) {
+    var s = [];
+    ! function () {
+        console.log("[DAGP] fetching user:", e, "folder:", t, "");
+        var a = "https://backend.deviantart.com/rss.xml?q=gallery:"+USERNAME+"/"+GalleryId+":" + e + "/" + t;
+        window.callback = function (e) {
+            for (var t = e.items, a = 0, i = t.length; a < i; a++) {
+                var l = {};
+                l.title = t[a].title, l.image = t[a].enclosure.link, s.push(l)
             }
-        }, 0);
-    }
+            for (var d = "", a = 0, i = s.length; a < i; a++) d += 
+            //Below is the element that the script will inject into DOM.
+            //Element will repeat with the amount of images requested/limited to.
+            // ### Feel free to customize it. ###
+            '<img style="position: relative; max-width:100%; overflow: hidden;" src="' + s[a].image + '"/>';
 
-    function calculateCentre() {
-        for(var i = 0, l = ssImages.length; i < l; i++) {
-            if(ssImages[i].width >= ssWidth) {
-                ssImages[i].style.left = (ssWidth - ssImages[i].width) / 2 + 'px';
-            }
-
-            if(ssImages[i].height >= ssHeight) {
-                ssImages[i].style.top = (ssHeight - ssImages[i].height) / 2 + 'px';
-            }
-        }
-    }
-
-    // Add current class to first frame
-    function addCurrent(n) {
-        ssImages[n].className += ' current';
-        ssAllDots[n].className += ' current';
-    }
-
-    // Clear all current classes
-    function clearCurrent() {
-        for(var i = 0; i < ssFrames; i++) {
-            ssImages[i].className = ssImages[i].className.replace(/ current/, '');
-            ssAllDots[i].className = ssAllDots[i].className.replace(/ current/, '');
-        }
-    }
-
-    // Update current frame
-    function goToFrame(n) {
-        if(n >= ssFrames) {
-            ssCurrentFrame = 0;
-        } else if(n < 0) {
-            ssCurrentFrame = ssFrames - 1;
-        } else {
-            ssCurrentFrame = n;
-        }
-    }
-
-    // Always initialise first image as .current
-    addCurrent(0);
-
-    // Next and Previous click handlers
-    if(window.addEventListener) {
-        ssPrev.addEventListener('click', clickPrev);
-        ssNext.addEventListener('click', clickNext);
-    } else if(window.attachEvent) {
-        ssPrev.attachEvent('onclick', clickPrev);
-        ssNext.attachEvent('onclick', clickNext);
-    }
-
-    function clickPrev() {
-        clearCurrent();
-        goToFrame(ssCurrentFrame - 1);
-        addCurrent(ssCurrentFrame);
-    }
-
-    function clickNext() {
-        clearCurrent();
-        goToFrame(ssCurrentFrame + 1);
-        addCurrent(ssCurrentFrame);
-    }
-
-    // Navigation dots click handlers
-    for(var i = 0; i < ssFrames; i++) {
-        if(window.addEventListener) {
-            ssAllDots[i].addEventListener('click', clickDots);
-        } else if(window.attachEvent) {
-            ssAllDots[i].attachEvent('onclick', clickDots);
-        }
-    }
-
-    function clickDots(e) {
-        if(e.target) {
-            var dotClicked = e.target.className;
-        } else if(e.srcElement) {
-            var dotClicked = e.srcElement.className;
-        }
-        var n = dotClicked.match(/\d+/);
-        clearCurrent();
-        goToFrame(parseInt(n[0]));
-        addCurrent(n[0]);
-    }
-
-    document.onkeydown = function(e) {
-        evt = e || window.event;
-        switch(evt.keyCode) {
-            case 37:
-                clickPrev();
-                break;
-            case 39:
-                clickNext();
-                break;
-        }
-    };
-
-    // Recalculate image centres on window resize
-    if(window.addEventListener) {
-        window.addEventListener('resize', windowResize);
-    } else if(window.attachEvent) {
-        window.attachEvent('onresize', windowResize);
-    }
-
-    function windowResize() {
-        getSSDimensions();
-        calculateCentre();
-    }
+            document.getElementById(TARGET).innerHTML = d, console.log("[DAGP] images fetched.\n", e.feed.title, "\n", e.status, "\n\n Plugins by jamesl1001\nhttps://github.com/jamesl1001/deviantART-Gallery-Plugin\nhttps://github.com/jamesl1001/deviantART-API\n\nThis version was heavily modified by Potto.");
+            const event = new Event("finish");
+            document.getElementById(TARGET).dispatchEvent(event)
+        };
+        var i = document.createElement("script");
+        i.src = "https://api.rss2json.com/v1/api.json?callback=callback&rss_url=" + escape(a), document.body.appendChild(i)
+    }()
 }
