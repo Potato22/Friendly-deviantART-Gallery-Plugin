@@ -1,4 +1,4 @@
-deviantART-Gallery-Plugin
+Friendly deviantART-Gallery-Plugin
 =========================
 
 HEAVILY MODIFIED BY [Potto](https://github.com/Potato22/Friendly-deviantART-Gallery-Plugin/commits/master/README.md?author=Potato22)
