@@ -7,15 +7,15 @@ https://github.com/jamesl1001/deviantART-API
 http://goessner.net/
 */
 
-const USERNAME = "YOURNAME"
-const GalleryId = "GALLERYID"
+const USERNAME = "fu51on"
+const GalleryId = "27123391"
 
 function getDeviations(url, limit, start) {
     var deviations = [],
         limit = limit || null,
         start = start || 0;
     let xhr = new XMLHttpRequest;
-    xhr.open("GET", "https://backend.deviantart.com/rss.xml?q=gallery:" + USERNAME + "/" + GalleryId), xhr.send(), xhr.onload = function () {
+    xhr.open("GET", "https://backend.deviantart.com/rss.xml?q=gallery:"+USERNAME+"/"+GalleryId), xhr.send(), console.log("[DAGP] request sent"), xhr.onload = function () {
         let json1 = xml2json((new DOMParser).parseFromString(xhr.response, "text/xml")),
             json2, items = JSON.parse("{" + json1.slice(11)).rss.channel.item;
         for (var i = 0, l = items.length; i < l; i++)
@@ -23,9 +23,7 @@ function getDeviations(url, limit, start) {
                 if (limit && i == start + limit) break;
                 var object = {};
                 object.title = items[i].title, object.link = items[i].link, object.image = items[i]["media:content"]["@url"], deviations.push(object), console.log("[DAGP] feed received")
-            }
-        processDeviations(deviations)
-        deviantARTGalleryPlugin(USERNAME, GalleryId, "16:9")
+            } console.log("[DAGP] DATA:"), processDeviations(deviations), deviantARTGalleryPlugin(USERNAME, GalleryId, "16:9")
     }
 }
 
