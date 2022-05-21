@@ -25,7 +25,6 @@ Usage
 ```html
     <script src="deviantART-gallery-plugin.js"></script>
     <script>
-        //for debug only, can be skipped.
         getDeviations("https://backend.deviantart.com/rss.xml?q=gallery:"+USERNAME+"/"+GalleryId, null, 0);
 
         function processDeviations(deviations) {
