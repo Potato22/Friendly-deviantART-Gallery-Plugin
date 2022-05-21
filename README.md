@@ -62,7 +62,7 @@ const USERNAME = "YOURNAME"
 const GalleryId = "GALLERYID"
 ```
 Gallery ID's can be found by looking at your gallery url
-`https://www.deviantart.com/potato2292/gallery/`**`78916640`**`/pottofolio`  
+`https://www.deviantart.com/potato2292/<your DA username>/`**`78916640`**`/<gallery name>`  
 
 You can directly change what element the script injects into DOM by editing the template inside the script file.
 ```js
