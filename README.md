@@ -2,7 +2,8 @@ Friendly deviantART-Gallery-Plugin
 =========================
 
 HEAVILY MODIFIED BY Potto  
-DOES NOT INCLUDE [simpleslider](https://github.com/jamesl1001/simpleslider)
+DOES NOT INCLUDE [simpleslider](https://github.com/jamesl1001/simpleslider)  
+The goal of this fork is to make the process of integrating this script to your page much easier and more understandable.
 
 Embed your deviantART gallery with this Javascript plugin.
 
@@ -24,7 +25,6 @@ Usage
 ```html
     <script src="deviantART-gallery-plugin.js"></script>
     <script>
-        //for debug only, can be skipped.
         getDeviations("https://backend.deviantart.com/rss.xml?q=gallery:"+USERNAME+"/"+GalleryId, null, 0);
 
         function processDeviations(deviations) {
@@ -52,7 +52,7 @@ To disable all debugging (from the script file), use the one without '**debug**'
 <div class="gridbox" id="daImg">
 ```
 You can customize **directly** what the script will inject into, make sure it's an **ID** name instead of class.
-The gridbox is just for demonstration purposes, feel free to customize it and use any other methods.
+The grid box is just for demonstration purposes, feel free to customize it and use any other methods.
 
 Additional info
 ---------------
@@ -61,8 +61,8 @@ To enter your username and gallery ID, you can edit the const string directly in
 const USERNAME = "YOURNAME"
 const GalleryId = "GALLERYID"
 ```
-Gallery ID's can be found by looking at your gallery url
-`https://www.deviantart.com/potato2292/gallery/`**`78916640`**`/pottofolio`  
+Gallery ID's can be found by looking at your gallery url  
+`https://www.deviantart.com/potato2292/your DA username/`**`78916640`**`/gallery name`  
 
 You can directly change what element the script injects into DOM by editing the template inside the script file.
 ```js
@@ -94,5 +94,5 @@ function deviantARTGalleryPlugin(e, t, n) {
 
 Quick QNA
 ---
-**Is there anyway to incrase or change the amount of images to display?**  
-_As of now, I couldn't find way to do just that. Sorry!_
+**Is there any way to increase or change the number of images to display?**  
+_As of now, I couldn't find a way to do just that. Sorry!_
