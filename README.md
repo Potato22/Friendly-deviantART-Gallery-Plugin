@@ -2,7 +2,8 @@ Friendly deviantART-Gallery-Plugin
 =========================
 
 HEAVILY MODIFIED BY Potto  
-DOES NOT INCLUDE [simpleslider](https://github.com/jamesl1001/simpleslider)
+DOES NOT INCLUDE [simpleslider](https://github.com/jamesl1001/simpleslider)  
+The goal of this fork is to make the process of integrating this script to your page much easier and understandable.
 
 Embed your deviantART gallery with this Javascript plugin.
 
