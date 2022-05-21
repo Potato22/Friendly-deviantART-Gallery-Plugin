@@ -2,6 +2,7 @@ Friendly deviantART-Gallery-Plugin
 =========================
 
 HEAVILY MODIFIED BY Potto
+DOES NOT INCLUDE [simpleslider](https://github.com/jamesl1001/simpleslider)
 
 Embed your deviantART gallery with this Javascript plugin.
 
