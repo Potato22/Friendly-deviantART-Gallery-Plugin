@@ -6,8 +6,8 @@ DOES NOT INCLUDE [simpleslider](https://github.com/jamesl1001/simpleslider)
 
 Embed your deviantART gallery with this Javascript plugin.
 
-This plugin contains two of [Jamesl1001](https://github.com/jamesl1001/deviantART-Gallery-Plugin)'s projects: 
-[deviantART-API](https://github.com/jamesl1001/deviantART-API)
+This plugin contains two of [Jamesl1001](https://github.com/jamesl1001/deviantART-Gallery-Plugin)'s projects:  
+[deviantART-API](https://github.com/jamesl1001/deviantART-API)  
 [deviantArt-Gallery-Plugin](https://github.com/jamesl1001/deviantART-Gallery-Plugin)
 
 Usage
