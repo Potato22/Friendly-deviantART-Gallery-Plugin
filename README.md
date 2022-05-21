@@ -1,11 +1,11 @@
 Friendly deviantART-Gallery-Plugin
 =========================
 
-HEAVILY MODIFIED BY [Potto](https://github.com/Potato22/Friendly-deviantART-Gallery-Plugin/commits/master/README.md?author=Potato22)
+HEAVILY MODIFIED BY Potto
 
 Embed your deviantART gallery with this Javascript plugin.
 
-This plugin contains two of Jamesl1001's projects: 
+This plugin contains two of [Jamesl1001](https://github.com/jamesl1001/deviantART-Gallery-Plugin)'s projects: 
 [deviantART-API](https://github.com/jamesl1001/deviantART-API)
 [deviantArt-Gallery-Plugin](https://github.com/jamesl1001/deviantART-Gallery-Plugin)
 
